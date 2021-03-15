@@ -181,7 +181,8 @@ class DonutProgressView @JvmOverloads constructor(
         length = 1f,
         gapWidthDegrees = gapWidthDegrees,
         gapAngleDegrees = gapAngleDegrees,
-        direction = direction
+        direction = direction,
+        icon = null
     )
 
     init {
@@ -276,7 +277,8 @@ class DonutProgressView @JvmOverloads constructor(
                             length = 0f,
                             gapWidthDegrees = gapWidthDegrees,
                             gapAngleDegrees = gapAngleDegrees,
-                            direction = direction
+                            direction = direction,
+                            icon = section.icon
                         )
                     )
                 } else {

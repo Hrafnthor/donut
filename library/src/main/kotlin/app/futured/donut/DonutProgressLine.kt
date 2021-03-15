@@ -7,6 +7,7 @@ import android.graphics.DashPathEffect
 import android.graphics.Paint
 import android.graphics.Path
 import android.graphics.PathMeasure
+import android.graphics.drawable.Drawable
 import kotlin.math.ceil
 
 internal class DonutProgressLine(
@@ -19,7 +20,8 @@ internal class DonutProgressLine(
     length: Float,
     gapWidthDegrees: Float,
     gapAngleDegrees: Float,
-    direction: DonutDirection
+    direction: DonutDirection,
+    icon: Drawable?
 ) {
 
     companion object {
