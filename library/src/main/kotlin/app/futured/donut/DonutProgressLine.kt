@@ -1,17 +1,13 @@
 package app.futured.donut
 
-import android.graphics.Canvas
-import android.graphics.ComposePathEffect
-import android.graphics.CornerPathEffect
-import android.graphics.DashPathEffect
-import android.graphics.Paint
-import android.graphics.Path
-import android.graphics.PathMeasure
+import android.graphics.*
 import android.graphics.drawable.Drawable
+import androidx.core.graphics.drawable.toBitmap
 import kotlin.math.ceil
 
 internal class DonutProgressLine(
     val name: String,
+    val icon: Drawable?,
     radius: Float,
     lineColor: Int,
     lineStrokeWidth: Float,
@@ -20,8 +16,7 @@ internal class DonutProgressLine(
     length: Float,
     gapWidthDegrees: Float,
     gapAngleDegrees: Float,
-    direction: DonutDirection,
-    icon: Drawable?
+    direction: DonutDirection
 ) {
 
     companion object {
@@ -52,6 +47,7 @@ internal class DonutProgressLine(
         set(value) {
             field = value
             paint.strokeWidth = value
+            iconSize = (value * 0.6).toInt()
         }
 
     var mLineStrokeCap: DonutStrokeCap = DonutStrokeCap.ROUND
@@ -94,6 +90,14 @@ internal class DonutProgressLine(
         }
 
     private var path: Path = createPath()
+    private var iconSize: Int = 0
+        set(value) {
+            field = value
+            updateIcon()
+        }
+
+    private var iconBitmap: Bitmap? = null
+    private var iconPosition: PointF = PointF(0.0f, 0.0f)
 
     init {
         this.mRadius = radius
@@ -144,6 +148,7 @@ internal class DonutProgressLine(
     private fun updatePathEffect() {
         val pathLen = PathMeasure(path, false).length
         val drawnLength = ceil(pathLen.toDouble() * mLength * mMasterProgress).toFloat()
+        updateIconLocation(drawnLength)
 
         paint.pathEffect = ComposePathEffect(
             CornerPathEffect(pathLen / SIDES),
@@ -157,8 +162,27 @@ internal class DonutProgressLine(
         )
     }
 
+    private fun updateIcon() {
+        if (icon != null && iconSize > 0) {
+            iconBitmap = icon.toBitmap(iconSize, iconSize)
+        }
+    }
+
+    private fun updateIconLocation(drawnLength: Float) {
+        val pos = FloatArray(2)
+        val tan = FloatArray(2)
+        val measure = PathMeasure(path, false)
+        if (measure.getPosTan(drawnLength / 2, pos, tan)) {
+            iconPosition = PointF(pos[0] - iconSize / 2, pos[1] - iconSize / 2)
+        }
+    }
+
     fun draw(canvas: Canvas) {
         canvas.drawPath(path, paint)
+
+        iconBitmap?.let { bitmap ->
+            canvas.drawBitmap(bitmap, iconPosition.x, iconPosition.y, null)
+        }
     }
 
     private fun Float.toRadians() = Math.toRadians(this.toDouble())

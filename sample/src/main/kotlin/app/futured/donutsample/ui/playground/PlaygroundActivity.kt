@@ -9,6 +9,7 @@ import android.widget.SeekBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
+import androidx.core.content.ContextCompat
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import app.futured.donut.DonutDirection
 import app.futured.donut.DonutProgressView
@@ -102,7 +103,8 @@ class PlaygroundActivity : AppCompatActivity() {
             DonutSection(
                 BlackCategory.name,
                 getColorCompat(BlackCategory.colorRes),
-                1f
+                1f,
+                ContextCompat.getDrawable(this, R.drawable.ic_bike)
             ),
             DonutSection(
                 GreenCategory.name,
