@@ -321,7 +321,7 @@ class DonutProgressView @JvmOverloads constructor(
         }
             ?: warn {
                 "Adding amount to non-existent section: $sectionName. " +
-                    "Please specify color, if you want to have section created automatically."
+                        "Please specify color, if you want to have section created automatically."
             }
     }
 
@@ -489,7 +489,13 @@ class DonutProgressView @JvmOverloads constructor(
         canvas.translate(centerX, centerY)
 
         bgLine.draw(canvas)
-        lines.forEach { it.draw(canvas) }
+        lines.forEachIndexed { index, line ->
+            val obscuredPathLength = if (index + 1 < lines.size) {
+                lines[index + 1].getDrawnLength()
+            } else 0f
+            line.updateIconLocation(obscuredPathLength)
+            line.draw(canvas)
+        }
     }
 
     private fun dpToPx(dp: Float) = TypedValue.applyDimension(

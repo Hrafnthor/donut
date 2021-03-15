@@ -109,12 +109,14 @@ class PlaygroundActivity : AppCompatActivity() {
             DonutSection(
                 GreenCategory.name,
                 getColorCompat(GreenCategory.colorRes),
-                1.2f
+                1.2f,
+                ContextCompat.getDrawable(this, R.drawable.ic_bike_orange)
             ),
             DonutSection(
                 OrangeCategory.name,
                 getColorCompat(OrangeCategory.colorRes),
-                1.4f
+                1.4f,
+                ContextCompat.getDrawable(this, R.drawable.ic_bike_white)
             )
         )
 

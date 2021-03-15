@@ -89,6 +89,7 @@ internal class DonutProgressLine(
             updatePathEffect()
         }
 
+    private var drawnLength: Float = 0.0f
     private var path: Path = createPath()
     private var iconSize: Int = 0
         set(value) {
@@ -147,8 +148,7 @@ internal class DonutProgressLine(
 
     private fun updatePathEffect() {
         val pathLen = PathMeasure(path, false).length
-        val drawnLength = ceil(pathLen.toDouble() * mLength * mMasterProgress).toFloat()
-        updateIconLocation(drawnLength)
+        drawnLength = ceil(pathLen.toDouble() * mLength * mMasterProgress).toFloat()
 
         paint.pathEffect = ComposePathEffect(
             CornerPathEffect(pathLen / SIDES),
@@ -168,11 +168,13 @@ internal class DonutProgressLine(
         }
     }
 
-    private fun updateIconLocation(drawnLength: Float) {
+    fun getDrawnLength(): Float = drawnLength
+
+    fun updateIconLocation(obscuredPathLength: Float) {
         val pos = FloatArray(2)
         val tan = FloatArray(2)
         val measure = PathMeasure(path, false)
-        if (measure.getPosTan(drawnLength / 2, pos, tan)) {
+        if (measure.getPosTan((drawnLength - obscuredPathLength) / 2 + obscuredPathLength, pos, tan)) {
             iconPosition = PointF(pos[0] - iconSize / 2, pos[1] - iconSize / 2)
         }
     }
