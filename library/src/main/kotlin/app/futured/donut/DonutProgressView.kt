@@ -34,6 +34,7 @@ class DonutProgressView @JvmOverloads constructor(
         private const val DEFAULT_GAP_ANGLE = 90f
         private const val DEFAULT_CAP = 1f
         private val DEFAULT_DIRECTION = DonutDirection.CLOCKWISE
+        private val DEFAULT_ORDERING = DonutOrdering.NONE
         private val DEFAULT_BG_COLOR_RES = R.color.grey
 
         private const val DEFAULT_ANIM_ENABLED = true
@@ -148,6 +149,13 @@ class DonutProgressView @JvmOverloads constructor(
 
             bgLine.mDirection = value
             lines.forEach { it.mDirection = value }
+            invalidate()
+        }
+
+    var ordering: DonutOrdering = DEFAULT_ORDERING
+        set(value) {
+            field = value
+
             invalidate()
         }
 
@@ -297,6 +305,7 @@ class DonutProgressView @JvmOverloads constructor(
             addAll(copy)
         }
 
+        order()
         resolveState()
     }
 
@@ -510,4 +519,19 @@ class DonutProgressView @JvmOverloads constructor(
     private fun warn(text: () -> String) {
         Log.w(TAG, text())
     }
+
+    private fun order(){
+        if (ordering == DonutOrdering.ASCENDING) {
+            this.data.sortBy { it.amount }
+            lines.sortBy {
+                getAmountForSection(it.name)
+            }
+        } else if (ordering == DonutOrdering.DESCENDING) {
+            this.data.sortByDescending { it.amount }
+            lines.sortByDescending {
+                getAmountForSection(it.name)
+            }
+        }
+    }
 }
+
