@@ -47,7 +47,7 @@ internal class DonutProgressLine(
         set(value) {
             field = value
             paint.strokeWidth = value
-            iconSize = (value * 0.6).toInt()
+            iconSize = (value * 0.5).toInt()
         }
 
     var mLineStrokeCap: DonutStrokeCap = DonutStrokeCap.ROUND
