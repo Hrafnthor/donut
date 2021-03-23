@@ -7,7 +7,7 @@ import kotlin.math.ceil
 
 internal class DonutProgressLine(
     val name: String,
-    val icon: Drawable?,
+    icon: Drawable?,
     radius: Float,
     lineColor: Int,
     lineStrokeWidth: Float,
@@ -89,6 +89,12 @@ internal class DonutProgressLine(
             updatePathEffect()
         }
 
+    var mIcon: Drawable? = null
+        set(value) {
+            field = value
+            updateIcon()
+        }
+
     private var drawnLength: Float = 0.0f
     private var path: Path = createPath()
     private var iconSize: Int = 0
@@ -110,6 +116,7 @@ internal class DonutProgressLine(
         this.mGapWidthDegrees = gapWidthDegrees
         this.mGapAngleDegrees = gapAngleDegrees
         this.mDirection = direction
+        this.mIcon = icon
     }
 
     private fun createPath(): Path {
@@ -163,9 +170,7 @@ internal class DonutProgressLine(
     }
 
     private fun updateIcon() {
-        if (icon != null && iconSize > 0) {
-            iconBitmap = icon.toBitmap(iconSize, iconSize)
-        }
+        iconBitmap = mIcon?.toBitmap(iconSize, iconSize)
     }
 
     fun getDrawnLength(): Float = drawnLength

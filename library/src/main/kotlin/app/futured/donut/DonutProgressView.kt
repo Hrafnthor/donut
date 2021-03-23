@@ -284,7 +284,10 @@ class DonutProgressView @JvmOverloads constructor(
                 } else {
                     lines
                         .filter { it.name == section.name }
-                        .forEach { it.mLineColor = newLineColor }
+                        .forEach {
+                            it.mLineColor = newLineColor
+                            it.mIcon = section.icon
+                        }
                 }
             }
 
